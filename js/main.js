@@ -20,7 +20,26 @@ const GetDB = class {
     }
 }
 const renderCard = (data) => {
-
+    let info = data.results;
+    let imgUrl = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
+    tvShowsList.textContent = '';
+    console.log(info);
+    info.forEach(item => {
+        const card = document.createElement('LI');
+        card.classList.add('tv-shows__item');
+        card.innerHTML = `
+            <a href="#" class="tv-card">
+                <span class="tv-card__vote">${item.vote_average}</span>
+                <img class="tv-card__img"
+                    src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : '' )}"
+                    data-backdrop="${item.backdrop_path ? imgUrl + item.backdrop_path : ''}"
+                    alt="${item.name}">
+                <h4 class="tv-card__head">${item.name}</h4>
+            </a>
+        `;
+        console.log(card);
+        tvShowsList.append(card);
+    });
 }
 new GetDB().getTestData().then(renderCard);
 
