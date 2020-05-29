@@ -1,3 +1,21 @@
+const DBService = class {
+    getData = async (url) => {
+        const res = await fetch(url);
+        if(res.ok){
+            return res.json();
+        }else{
+            throw new Error(`Can't get result from ${url}`);
+        }
+    }
+    getTestData = async () =>{
+        return await this.getData('test.json');
+    }
+}
+
+new DBService().getTestData().then((data) => {
+    console.log(data);
+});
+
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
 const modal = document.querySelector('.modal');
@@ -25,6 +43,7 @@ leftMenu.addEventListener('click', (event)=>{
 });
 // Modal action
 tvShowsList.addEventListener('click', event =>{
+    event.preventDefault();
     let target = event.target;
     let card = target.closest('.tv-card');
     if(card){
