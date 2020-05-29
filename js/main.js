@@ -47,9 +47,11 @@ function changeImg(){
         let card = event.target.closest('.tv-card');
         let img = card.querySelector('.tv-card__img');
         if(img.getAttribute('data-backdrop').match("((http|https):\/\/)?(www.)?([a-z0-9-]+\.)+[a-z]{2,6}")){         
-            let atrSrc = img.getAttribute('data-backdrop');
-            img.setAttribute('data-backdrop', img.src);
-            img.src = atrSrc;
+            // let atrSrc = img.getAttribute('data-backdrop');
+            // img.setAttribute('data-backdrop', img.src);
+            // img.src = atrSrc;
+            //    the same above and  below.  using the destructuring below
+            [img.src, img.dataset.backdrop] = [img.dataset.backdrop, img.src];
         }
     }
 }
