@@ -25,6 +25,9 @@ const renderCard = (data) => {
     tvShowsList.textContent = '';
     console.log(info);
     info.forEach(item => {
+        // one more way to insert value to our card
+        // const {vote_average, poster_path, backdrop_path, name } = item
+
         const card = document.createElement('LI');
         card.classList.add('tv-shows__item');
         card.innerHTML = `
