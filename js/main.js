@@ -1,25 +1,30 @@
-const DBService = class {
-    getData = async (url) => {
-        const res = await fetch(url);
-        if(res.ok){
-            return res.json();
-        }else{
-            throw new Error(`Can't get result from ${url}`);
-        }
-    }
-    getTestData = async () =>{
-        return await this.getData('test.json');
-    }
-}
-
-new DBService().getTestData().then((data) => {
-    console.log(data);
-});
 
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
 const modal = document.querySelector('.modal');
 const tvShowsList = document.querySelector('.tv-shows__list');
+
+
+const GetDB = class {
+    getData = async (url) =>{
+        const res = await fetch(url);
+        if(res.ok){
+            return await res.json();
+        }else{
+            throw new Error(` Can't get data from ${url}`);
+        }
+    }  
+
+    getTestData =   async () => {
+        return await this.getData('test.json');
+    }
+}
+const renderCard = (data) => {
+
+}
+new GetDB().getTestData().then(renderCard);
+
+
 // Menu action
 hamburger.addEventListener('click', ()=>{
     leftMenu.classList.toggle('openMenu');
