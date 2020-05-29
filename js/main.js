@@ -46,9 +46,11 @@ function changeImg(){
     if(event.target.closest('.tv-card')){
         let card = event.target.closest('.tv-card');
         let img = card.querySelector('.tv-card__img');
-        let atrSrc = img.getAttribute('data-backdrop');
-        img.setAttribute('data-backdrop', img.src);
-        img.src = atrSrc;
+        if(img.getAttribute('data-backdrop').match("((http|https):\/\/)?(www.)?([a-z0-9-]+\.)+[a-z]{2,6}")){         
+            let atrSrc = img.getAttribute('data-backdrop');
+            img.setAttribute('data-backdrop', img.src);
+            img.src = atrSrc;
+        }
     }
 }
 
