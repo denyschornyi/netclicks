@@ -1,3 +1,4 @@
+const imgUrl = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
 
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
@@ -21,20 +22,24 @@ const GetDB = class {
 }
 const renderCard = (data) => {
     let info = data.results;
-    let imgUrl = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
     tvShowsList.textContent = '';
     console.log(info);
     info.forEach(item => {
         // one more way to insert value to our card
-        // const {vote_average, poster_path, backdrop_path, name } = item
+        // const {
+        //     vote_average: vote, 
+        //     poster_path: poster,
+        //     backdrop_path: backdrop, 
+        //     name: title 
+        // } = item;
 
         const card = document.createElement('LI');
         card.classList.add('tv-shows__item');
         card.innerHTML = `
             <a href="#" class="tv-card">
-                <span class="tv-card__vote">${item.vote_average}</span>
+                ${item.vote_average ? `<span class="tv-card__vote">${item.vote_average }</span>` : '' }
                 <img class="tv-card__img"
-                    src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : '' )}"
+                    src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : 'img/no-poster.jpg' )}"
                     data-backdrop="${item.backdrop_path ? imgUrl + item.backdrop_path : ''}"
                     alt="${item.name}">
                 <h4 class="tv-card__head">${item.name}</h4>
