@@ -4,7 +4,11 @@ const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
 const modal = document.querySelector('.modal');
 const tvShowsList = document.querySelector('.tv-shows__list');
+const tvShows = document.querySelector('.tv-shows');
 
+const loading = document.createElement('DIV');
+loading.classList.add('loading');
+console.log(loading);
 
 const GetDB = class {
     getData = async (url) =>{
@@ -45,12 +49,15 @@ const renderCard = (data) => {
                 <h4 class="tv-card__head">${item.name}</h4>
             </a>
         `;
-        console.log(card);
+        loading.remove();
         tvShowsList.append(card);
     });
 }
-new GetDB().getTestData().then(renderCard);
 
+{
+    tvShows.append(loading);
+    new GetDB().getTestData().then(renderCard);
+}   
 
 // Menu action
 hamburger.addEventListener('click', ()=>{
