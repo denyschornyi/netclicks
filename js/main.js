@@ -5,10 +5,16 @@ const hamburger = document.querySelector('.hamburger');
 const modal = document.querySelector('.modal');
 const tvShowsList = document.querySelector('.tv-shows__list');
 const tvShows = document.querySelector('.tv-shows');
+const tvCardImg = document.querySelector('.tv-card__img');
+const modalTitle = document.querySelector('.modal__title');
+const genresList = document.querySelector('.genres-list');
+const rating = document.querySelector('.rating');
+const description = document.querySelector('.description');
+const modalLink = document.querySelector('.modal__link');
 
+//Create a preloader
 const loading = document.createElement('DIV');
 loading.classList.add('loading');
-console.log(loading);
 
 const GetDB = class {
     getData = async (url) =>{
@@ -20,8 +26,12 @@ const GetDB = class {
         }
     }  
 
-    getTestData =   async () => {
-        return await this.getData('test.json');
+    getTestData = () => {
+        return  this.getData('test.json');
+    }
+
+    getTestCard = () => {
+        return this.getData('card.json');
     }
 }
 const renderCard = (data) => {
@@ -59,6 +69,7 @@ const renderCard = (data) => {
     new GetDB().getTestData().then(renderCard);
 }   
 
+
 // Menu action
 hamburger.addEventListener('click', ()=>{
     leftMenu.classList.toggle('openMenu');
@@ -86,6 +97,24 @@ tvShowsList.addEventListener('click', event =>{
     let target = event.target;
     let card = target.closest('.tv-card');
     if(card){
+        
+        new GetDB().getTestCard()
+                            .then(data => {
+                                console.log(data);
+                                tvCardImg.src = imgUrl + data.poster_path;
+                                modalTitle.innerText = data.name;
+                                genresList.innerHTML = '';
+                                data.genres.forEach(item =>{
+                                    genresList.innerHTML  += `
+                                        <li>${item.name}</li>
+                                    `;
+                                });
+                                rating.innerText = data.vote_average;
+                                description.innerText = data.overview;
+                                modalLink.href = data.homepage;
+                    
+                            });
+
         modal.classList.remove('hide');
         document.body.style.overflow = 'hidden';
     }
