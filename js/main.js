@@ -114,7 +114,6 @@ tvShowsList.addEventListener('click', event =>{
                                 modalLink.href = data.homepage;
                     
                             });
-
         modal.classList.remove('hide');
         document.body.style.overflow = 'hidden';
     }
