@@ -113,9 +113,11 @@ tvShowsList.addEventListener('click', event =>{
                                 description.innerText = data.overview;
                                 modalLink.href = data.homepage;
                     
-                            });
-        modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden';
+                            })
+                            .then( () => {
+                                modal.classList.remove('hide');
+                                document.body.style.overflow = 'hidden';
+                            })
     }
 });
 modal.addEventListener('click', (event) => {
