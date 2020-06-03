@@ -1,4 +1,6 @@
 const imgUrl = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2';
+const serverLink = 'https://api.themoviedb.org/3';
+const ApiKey = 'a50cde705e9b73389fbfaad0fd645e4f';
 
 const leftMenu = document.querySelector('.left-menu');
 const hamburger = document.querySelector('.hamburger');
@@ -33,7 +35,13 @@ const GetDB = class {
     getTestCard = () => {
         return this.getData('card.json');
     }
+
+    getSearchResult = (query) => {
+        return this.getData(`${serverLink}/search/movie?api_key=${ApiKey}&language=en-US&query=${query}&page=1&include_adult=false`);
+        // https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&language=en-US&page=1&query=query&include_adult=false    
+    }
 }
+
 const renderCard = (data) => {
     let info = data.results;
     tvShowsList.textContent = '';
@@ -63,11 +71,13 @@ const renderCard = (data) => {
         tvShowsList.append(card);
     });
 }
-
+ 
 {
     tvShows.append(loading);
     new GetDB().getTestData().then(renderCard);
 }   
+
+   console.log( new GetDB().getSearchResult('batman'));
 
 
 // Menu action
