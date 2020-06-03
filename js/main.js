@@ -13,6 +13,8 @@ const genresList = document.querySelector('.genres-list');
 const rating = document.querySelector('.rating');
 const description = document.querySelector('.description');
 const modalLink = document.querySelector('.modal__link');
+const searchForm = document.querySelector('.search__form');
+const searchFormInput = document.querySelector('.search__form-input');
 
 //Create a preloader
 const loading = document.createElement('DIV');
@@ -40,45 +42,12 @@ const GetDB = class {
         return this.getData(`${serverLink}/search/movie?api_key=${ApiKey}&language=en-US&query=${query}&page=1&include_adult=false`);
         // https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&language=en-US&page=1&query=query&include_adult=false    
     }
+
+    getTvShow = id => {
+        return  this.getData(`${serverLink}/tv?api_key=${ApiKey}&language=en-US&query=${query}&page=1&include_adult=false`);
+        // https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&language=en-US&page=1&query=hey&include_adult=false
+    }
 }
-
-const renderCard = (data) => {
-    let info = data.results;
-    tvShowsList.textContent = '';
-    console.log(info);
-    info.forEach(item => {
-        // one more way to insert value to our card
-        // const {
-        //     vote_average: vote, 
-        //     poster_path: poster,
-        //     backdrop_path: backdrop, 
-        //     name: title 
-        // } = item;
-
-        const card = document.createElement('LI');
-        card.classList.add('tv-shows__item');
-        card.innerHTML = `
-            <a href="#" class="tv-card">
-                ${item.vote_average ? `<span class="tv-card__vote">${item.vote_average }</span>` : '' }
-                <img class="tv-card__img"
-                    src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : 'img/no-poster.jpg' )}"
-                    data-backdrop="${item.backdrop_path ? imgUrl + item.backdrop_path : ''}"
-                    alt="${item.name}">
-                <h4 class="tv-card__head">${item.name}</h4>
-            </a>
-        `;
-        loading.remove();
-        tvShowsList.append(card);
-    });
-}
- 
-{
-    tvShows.append(loading);
-    new GetDB().getTestData().then(renderCard);
-}   
-
-   console.log( new GetDB().getSearchResult('batman'));
-
 
 // Menu action
 hamburger.addEventListener('click', ()=>{
@@ -106,6 +75,7 @@ tvShowsList.addEventListener('click', event =>{
     event.preventDefault();
     let target = event.target;
     let card = target.closest('.tv-card');
+    console.log(card);
     if(card){
         
         new GetDB().getTestCard()
@@ -140,6 +110,22 @@ modal.addEventListener('click', (event) => {
 tvShowsList.addEventListener('mouseover', changeImg);
 tvShowsList.addEventListener('mouseout', changeImg);
 
+
+// From submit action
+
+searchForm.addEventListener('submit', () => {
+    event.preventDefault();
+    let value = searchFormInput.value.trim();
+    if(value){
+        tvShows.append(loading);
+        new GetDB().getSearchResult(value).then(renderCard);
+    }
+    searchFormInput.value = ''; 
+});
+
+
+
+//Function 
 function changeImg(){
     if(event.target.closest('.tv-card')){
         let card = event.target.closest('.tv-card');
@@ -153,6 +139,36 @@ function changeImg(){
         }
     }
 }
+
+const renderCard = (data) => {
+    let info = data.results;
+    tvShowsList.textContent = '';
+    console.log(info);
+    info.forEach(item => {
+        // one more way to insert value to our card
+        // const {
+        //     vote_average: vote, 
+        //     poster_path: poster,
+        //     backdrop_path: backdrop, 
+        //     name: title 
+        // } = item;
+        console.log(item);
+        const card = document.createElement('LI');
+        card.classList.add('tv-shows__item');
+        card.innerHTML = `
+            <a href="#" data-id=${item.id} class="tv-card">
+                ${item.vote_average ? `<span class="tv-card__vote">${item.vote_average }</span>` : '' }
+                <img class="tv-card__img"
+                    src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : 'img/no-poster.jpg' )}"
+                    data-backdrop="${item.backdrop_path ? imgUrl + item.backdrop_path : ''}"
+                    alt="${item.name}">
+                <h4 class="tv-card__head">${item.title}</h4>
+            </a>
+        `;
+        loading.remove();
+        tvShowsList.append(card);
+    });
+}   
 
 
 
