@@ -45,7 +45,7 @@ const GetDB = class {
 
     getTvShow = id => {
         console.log(id);
-        return  this.getData(`${serverLink}/tv?api_key=${ApiKey}&language=en-US&query=${id}&page=1&include_adult=false`);
+        return  this.getData(`${serverLink}/movie/${id}?api_key=${ApiKey}&language=en-US`);
         // https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&language=en-US&page=1&query=hey&include_adult=false
     }
 }
@@ -77,12 +77,12 @@ tvShowsList.addEventListener('click', event =>{
     let target = event.target;
     let card = target.closest('.tv-card');
     if(card){
-        
+        console.log(card);
         new GetDB().getTvShow(card.id)
                             .then(data => {
                                 console.log(data);
                                 tvCardImg.src = imgUrl + data.poster_path;
-                                modalTitle.innerText = data.name;
+                                modalTitle.innerText = data.title;
                                 genresList.innerHTML = '';
                                 data.genres.forEach(item =>{
                                     genresList.innerHTML  += `
