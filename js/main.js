@@ -92,7 +92,8 @@ tvShowsList.addEventListener('click', event =>{
                                 });
                                 rating.innerText = data.vote_average;
                                 description.innerText = data.overview;
-                                modalLink.href = data.homepage;
+                                data.homepage ? modalLink.href = data.homepage : '';
+                                
                     
                             })
                             .then( () => {
