@@ -80,7 +80,6 @@ tvShowsList.addEventListener('click', event =>{
         console.log(card);
         new GetDB().getTvShow(card.id)
                             .then(data => {
-                                console.log(data);
                                 tvCardImg.src = imgUrl + data.poster_path;
                                 modalTitle.innerText = data.title;
                                 genresList.innerHTML = '';
