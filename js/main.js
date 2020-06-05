@@ -83,7 +83,7 @@ tvShowsList.addEventListener('click', event =>{
         
         new GetDB().getTvShow(card.id)
                             .then(data => {
-                                tvCardImg.src = imgUrl + data.poster_path;
+                                data.poster_path ? tvCardImg.src = imgUrl + data.poster_path : '';
                                 modalTitle.innerText = data.title;
                                 genresList.innerHTML = '';
                                 data.genres.forEach(item =>{
@@ -122,7 +122,6 @@ tvShowsList.addEventListener('mouseout', changeImg);
 searchForm.addEventListener('submit', () => {
     event.preventDefault();
     let value = searchFormInput.value.trim();
-    tvShowsHead.textContent = 'Shearch results';
     if(value){
         tvShows.append(loading);
         new GetDB().getSearchResult(value)
@@ -137,6 +136,8 @@ searchForm.addEventListener('submit', () => {
 
 function nothingSearch(){
     tvShowsHead.textContent = 'Sorry... Nothing was found';
+    tvShowsHead.style.color = 'red';
+    tvShowsList.textContent = '';
     loading.remove();
 }
 
@@ -157,9 +158,12 @@ function changeImg(){
 const renderCard = (data) => {
     if(!data.total_results){
         nothingSearch();
+        return;
     } 
     let info = data.results;
     tvShowsList.textContent = '';
+    tvShowsHead.textContent = 'Shearch results';
+    tvShowsHead.style.color = 'black';
     info.forEach(item => {
         // one more way to insert value to our card
         // const {
