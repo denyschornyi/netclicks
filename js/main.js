@@ -15,6 +15,7 @@ const description = document.querySelector('.description');
 const modalLink = document.querySelector('.modal__link');
 const searchForm = document.querySelector('.search__form');
 const searchFormInput = document.querySelector('.search__form-input');
+const preloader = document.querySelector('.preloader');
 
 //Create a preloader
 const loading = document.createElement('DIV');
@@ -77,7 +78,8 @@ tvShowsList.addEventListener('click', event =>{
     let target = event.target;
     let card = target.closest('.tv-card');
     if(card){
-        console.log(card);
+        preloader.style.display = 'block';
+        
         new GetDB().getTvShow(card.id)
                             .then(data => {
                                 tvCardImg.src = imgUrl + data.poster_path;
@@ -96,6 +98,9 @@ tvShowsList.addEventListener('click', event =>{
                             .then( () => {
                                 modal.classList.remove('hide');
                                 document.body.style.overflow = 'hidden';
+                            })
+                            .then( () => {
+                                preloader.style.display = '';
                             })
     }
 });
