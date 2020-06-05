@@ -44,7 +44,8 @@ const GetDB = class {
     }
 
     getTvShow = id => {
-        return  this.getData(`${serverLink}/tv?api_key=${ApiKey}&language=en-US&query=${query}&page=1&include_adult=false`);
+        console.log(id);
+        return  this.getData(`${serverLink}/tv?api_key=${ApiKey}&language=en-US&query=${id}&page=1&include_adult=false`);
         // https://api.themoviedb.org/3/search/tv?api_key=<<api_key>>&language=en-US&page=1&query=hey&include_adult=false
     }
 }
@@ -75,10 +76,9 @@ tvShowsList.addEventListener('click', event =>{
     event.preventDefault();
     let target = event.target;
     let card = target.closest('.tv-card');
-    console.log(card);
     if(card){
         
-        new GetDB().getTestCard()
+        new GetDB().getTvShow(card.id)
                             .then(data => {
                                 console.log(data);
                                 tvCardImg.src = imgUrl + data.poster_path;
@@ -143,7 +143,6 @@ function changeImg(){
 const renderCard = (data) => {
     let info = data.results;
     tvShowsList.textContent = '';
-    console.log(info);
     info.forEach(item => {
         // one more way to insert value to our card
         // const {
@@ -152,11 +151,10 @@ const renderCard = (data) => {
         //     backdrop_path: backdrop, 
         //     name: title 
         // } = item;
-        console.log(item);
         const card = document.createElement('LI');
         card.classList.add('tv-shows__item');
         card.innerHTML = `
-            <a href="#" data-id=${item.id} class="tv-card">
+            <a href="#" id=${item.id} class="tv-card">
                 ${item.vote_average ? `<span class="tv-card__vote">${item.vote_average }</span>` : '' }
                 <img class="tv-card__img"
                     src="${item.poster_path ? imgUrl + item.poster_path : (item.backdrop_path ? imgUrl + item.backdrop_path : 'img/no-poster.jpg' )}"
