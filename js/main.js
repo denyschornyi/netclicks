@@ -16,6 +16,7 @@ const modalLink = document.querySelector('.modal__link');
 const searchForm = document.querySelector('.search__form');
 const searchFormInput = document.querySelector('.search__form-input');
 const preloader = document.querySelector('.preloader');
+const tvShowsHead = document.querySelector('.tv-shows__head');
 
 //Create a preloader
 const loading = document.createElement('DIV');
@@ -121,9 +122,11 @@ tvShowsList.addEventListener('mouseout', changeImg);
 searchForm.addEventListener('submit', () => {
     event.preventDefault();
     let value = searchFormInput.value.trim();
+    tvShowsHead.textContent = 'Shearch results';
     if(value){
         tvShows.append(loading);
-        new GetDB().getSearchResult(value).then(renderCard);
+        new GetDB().getSearchResult(value)
+            .then(renderCard);
     }
     searchFormInput.value = ''; 
 });
@@ -131,6 +134,12 @@ searchForm.addEventListener('submit', () => {
 
 
 //Function 
+
+function nothingSearch(){
+    tvShowsHead.textContent = 'Sorry... Nothing was found';
+    loading.remove();
+}
+
 function changeImg(){
     if(event.target.closest('.tv-card')){
         let card = event.target.closest('.tv-card');
@@ -146,6 +155,9 @@ function changeImg(){
 }
 
 const renderCard = (data) => {
+    if(!data.total_results){
+        nothingSearch();
+    } 
     let info = data.results;
     tvShowsList.textContent = '';
     info.forEach(item => {
